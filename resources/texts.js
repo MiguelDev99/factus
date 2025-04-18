@@ -1,0 +1,15 @@
+export const texts = {
+  welcome: 'Bienvenido',
+  welcome_guest: 'Bienvenido, invitado',
+  logout: 'Cerrar sesión',
+  dashboardTitle: 'Dashboard',
+  billing: 'Facturación',
+  clients: 'Clientes',
+  products: 'Productos',
+  services: 'Servicios',
+  home: 'Inicio',
+  logout: 'Cerrar sesión',
+  login: 'Iniciar sesión',
+  categories: 'Categorías',
+  productsTitle: 'Productos disponibles',
+};
