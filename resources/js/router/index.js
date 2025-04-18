@@ -7,6 +7,8 @@ import Facturacion from '../components/pages/Facturacion.vue';
 import Clientes from '../components/pages/Clientes.vue';
 import Productos from '../components/pages/Productos.vue';
 import Carrito from '../components/pages/Carrito.vue';
+import ForgotPassword from '../components/Auth/ForgotPassword.vue';
+import ResetPassword from '../components/Auth/ResetPassword.vue';
 
 const routes = [
   { 
@@ -18,6 +20,16 @@ const routes = [
     path: '/register', 
     name: 'Register',
     component: Register 
+  },
+  {
+    path: '/forgot-password',
+    name: 'ForgotPassword',
+    component: ForgotPassword
+  },
+  {
+    path: '/reset-password/:token',
+    name: 'ResetPassword',
+    component: ResetPassword
   },
   {
     path: '/dashboard',

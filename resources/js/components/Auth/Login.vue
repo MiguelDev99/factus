@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="flex items-center justify-center min-h-screen bg-gray-600">
     <div class="w-full max-w-md p-8 space-y-6 bg-white rounded-2xl shadow-lg">
       <h2 class="text-2xl font-bold text-center text-gray-800">Iniciar sesión</h2>
       <form @submit.prevent="login" class="space-y-4">
@@ -32,6 +32,9 @@
         <p v-if="error" class="text-sm text-red-600 text-center">{{ error }}</p>
         <p class="text-sm text-center text-gray-600">
           ¿No tienes una cuenta? <router-link to="/register" class="text-blue-600 hover:underline">Regístrate</router-link>
+        </p>
+        <p class="text-sm text-center text-gray-600">
+          <router-link to="/forgot-password" class="text-blue-600 hover:underline">Olvidé mi contraseña</router-link>
         </p>
       </form>
     </div>
