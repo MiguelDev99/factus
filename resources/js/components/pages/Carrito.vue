@@ -44,9 +44,11 @@
       <button
         v-if="productos.length"
         class="mt-6 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition w-full text-lg font-medium"
+        @click="facturarCarrito"
       >
         Proceder al Pago
       </button>
+
     </div>
 
     <!-- Modal de Confirmación -->
@@ -135,7 +137,28 @@ export default {
     },
     getImageUrl(imageName) {
       return imageName ? `/images/products/${imageName}` : '/images/products/default.jpg'
+    },
+    async facturarCarrito() {
+      const toast = useToast()
+      try {
+        const token = localStorage.getItem('token')
+        const response = await axios.post('/facturar-carrito', {}, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+
+        if (response.data.data) {
+          toast.success('✅ Factura generada con éxito')
+          console.log('Factura generada:', response.data.data)
+          // Aquí podrías redirigir o limpiar el carrito si lo deseas
+        } else {
+          toast.error('Error al generar la factura')
+        }
+      } catch (error) {
+        console.error('Error al facturar:', error)
+        toast.error('Ocurrió un problema al generar la factura')
+      }
     }
+
   }
 }
 </script>

@@ -42,4 +42,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    // App\Models\User.php
+    public function carrito()
+    {
+        return $this->hasMany(CartItem::class, 'id_user');
+    }
+
 }

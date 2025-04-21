@@ -32,6 +32,7 @@ Route::middleware('jwt.auth')->group(function () {
     Route::post('/cart', [CartItemController::class, 'addToCart']);
     Route::get('/cart', [CartItemController::class, 'getCartItems']);
     Route::delete('/cart/{id}', [CartItemController::class, 'removeFromCart']);
+    Route::post('/facturar-carrito', [CartItemController::class, 'facturar']);
 });
 
 
