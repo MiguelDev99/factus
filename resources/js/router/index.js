@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Login from '../components/Auth/Login.vue';
 import Register from '../components/Auth/Register.vue';
-import Dashboard from '../components/Dashboard.vue';
+import Dashboard from '../components/pages/Dashboard.vue';
 import DashboardLayout from '../layouts/DashboardLayout.vue';
 import Facturacion from '../components/pages/Facturacion.vue';
 import Clientes from '../components/pages/Clientes.vue';
@@ -9,12 +9,17 @@ import Productos from '../components/pages/Productos.vue';
 import Carrito from '../components/pages/Carrito.vue';
 import ForgotPassword from '../components/Auth/ForgotPassword.vue';
 import ResetPassword from '../components/Auth/ResetPassword.vue';
+import Perfil from '../components/pages/Perfil.vue';
 
 const routes = [
-  { 
-    path: '/', 
-    name: 'Login', 
-    component: Login 
+  {
+    path: '/',
+    redirect: '/login'
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
   },
   { 
     path: '/register', 
@@ -61,6 +66,11 @@ const routes = [
         path: '/carrito',
         name: 'Carrito',
         component: Carrito
+      },
+      {
+        path: '/perfil',
+        name: 'Perfil',
+        component: Perfil
       }
     ]
   }

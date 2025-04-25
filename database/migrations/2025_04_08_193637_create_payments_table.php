@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_order');
-            $table->foreign('id_order')->references('id')->on('orders');
+            $table->unsignedBigInteger('user_id'); // Para saber quién hizo el pago
             $table->string('payment_method');
-            $table->string('payment_status',1);
+            $table->string('payment_status', 1);
+            $table->string('bill_number')->nullable(); // Número de factura
+            $table->decimal('total', 10, 2)->default(0); // Total de la factura
+            $table->timestamp('billed_at')->nullable(); // Fecha/hora de facturación
             $table->timestamps();
         });
     }

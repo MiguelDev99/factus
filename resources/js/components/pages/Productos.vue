@@ -1,43 +1,41 @@
 <template>
-  <div class="px-4">
-    <h2 class="text-xl font-bold text-gray-800 mb-6">{{ texts.productsTitle }}</h2>
+  <div class="px-4 sm:px-6 lg:px-8">
+    <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-6">{{ texts.productsTitle }}</h2>
 
     <div v-if="loading" class="text-gray-500 text-lg">Cargando productos...</div>
 
-    <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-      <div
-        v-for="product in products"
-        :key="product.id"
-        class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 p-6 flex flex-col items-center text-center"
+    <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 sm:gap-8">
+      <div v-for="product in products" :key="product.id"
+        class="bg- rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 p-5 flex flex-col items-center text-center"
       >
         <img
           :src="getImageUrl(product.image)"
           alt="Imagen del producto"
-          class="w-40 h-40 object-cover object-center rounded-xl mb-4 border border-gray-200"
+          class="w-32 h-32 sm:w-40 sm:h-40 object-cover object-center rounded-xl mb-4 border border-gray-200"
         />
 
-        <h3 class="text-xl font-semibold text-gray-800 mb-1">{{ product.name }}</h3>
-        <p class="text-gray-500 text-sm mb-3">{{ product.description }}</p>
-        <p class="text-green-600 font-bold text-lg mb-4">
+        <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mb-1">{{ product.name }}</h3>
+        <p class="text-gray-500 text-sm sm:text-base mb-3">{{ product.description }}</p>
+        <p class="text-green-600 font-bold text-base sm:text-lg mb-4">
           $ {{ Number(product.price).toLocaleString('es-CO') }}
         </p>
 
         <div class="flex items-center justify-center gap-3 mb-4">
           <button
             @click="decreaseQuantity(product.id)"
-            class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold w-8 h-8 rounded-full transition"
+            class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold w-8 h-8 sm:w-9 sm:h-9 rounded-full transition"
           >-</button>
           <span class="text-md font-medium">{{ quantities[product.id] || 1 }}</span>
           <button
             @click="increaseQuantity(product.id)"
-            class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold w-8 h-8 rounded-full transition"
+            class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold w-8 h-8 sm:w-9 sm:h-9 rounded-full transition"
           >+</button>
         </div>
 
         <button
           :disabled="addingToCart[product.id]"
           @click="addToCart(product)"
-          class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-2 rounded-lg transition w-full disabled:opacity-50 disabled:cursor-not-allowed"
+          class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 sm:px-5 py-2 rounded-lg transition w-full disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
         >
           {{ addingToCart[product.id] ? 'Añadiendo...' : 'Añadir al carrito' }}
         </button>
@@ -99,14 +97,12 @@ export default {
       this.addingToCart[product.id] = true
 
       try {
-        // Llama al backend para agregar el producto al carrito
         await this.$axios.post('/cart', {
           id_product: product.id,
           quantity,
           price: product.price
         })
 
-        // 🔔 Emitir evento para actualizar el contador del carrito
         emitter.emit('carritoActualizado')
 
         toast.success('Producto añadido al carrito 🛒')

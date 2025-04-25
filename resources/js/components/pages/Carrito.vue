@@ -43,12 +43,19 @@
 
       <button
         v-if="productos.length"
-        class="mt-6 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition w-full text-lg font-medium"
+        class="mt-6 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition w-full text-lg font-medium flex justify-center items-center gap-2"
+        :disabled="cargandoFactura"
         @click="facturarCarrito"
       >
-        Proceder al Pago
+        <span v-if="!cargandoFactura">Proceder al Pago</span>
+        <span v-else class="flex items-center gap-2">
+          <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+          </svg>
+          Procesando...
+        </span>
       </button>
-
     </div>
 
     <!-- Modal de Confirmación -->
@@ -79,7 +86,8 @@ export default {
     return {
       productos: [],
       showConfirmModal: false,
-      productoAEliminar: null
+      productoAEliminar: null,
+      cargandoFactura: false // nueva propiedad
     }
   },
   computed: {
@@ -140,25 +148,32 @@ export default {
     },
     async facturarCarrito() {
       const toast = useToast()
+      this.cargandoFactura = true
       try {
         const token = localStorage.getItem('token')
         const response = await axios.post('/facturar-carrito', {}, {
           headers: { Authorization: `Bearer ${token}` }
         })
 
-        if (response.data.data) {
-          toast.success('✅ Factura generada con éxito')
-          console.log('Factura generada:', response.data.data)
-          // Aquí podrías redirigir o limpiar el carrito si lo deseas
+        const facturaData = response.data.data
+        if (facturaData) {
+          const mensaje = facturaData.message || 'Factura generada con éxito'
+          const numeroFactura = facturaData.bill?.number
+          const referencia = facturaData.bill?.reference_code
+
+          toast.success(`✅ ${mensaje}\nNúmero: ${numeroFactura || 'Desconocido'}\nReferencia: ${referencia || 'N/A'}`)
+          eventBus.emit('carritoActualizado')
+          this.productos = []
         } else {
           toast.error('Error al generar la factura')
         }
       } catch (error) {
         console.error('Error al facturar:', error)
         toast.error('Ocurrió un problema al generar la factura')
+      } finally {
+        this.cargandoFactura = false
       }
     }
-
   }
 }
 </script>

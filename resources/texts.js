@@ -12,4 +12,5 @@ export const texts = {
   login: 'Iniciar sesión',
   categories: 'Categorías',
   productsTitle: 'Productos disponibles',
+  profile: 'Perfil',
 };

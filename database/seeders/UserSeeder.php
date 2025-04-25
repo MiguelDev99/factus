@@ -17,7 +17,17 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'Admin User',
             'email' => 'mangel.ojeda99@gmail.com',
-            'password' => Hash::make('123'), // Encripta la contraseña
+            'password' => Hash::make('123'),
+            'identification' => '1112496098',
+            'dv' => '3',
+            'company' => '',
+            'trade_name' => '',
+            'address' => 'Calle falsa 123',
+            'phone' => '3000000000',
+            'legal_organization_id' => '2',
+            'tribute_id' => '21',
+            'identification_document_id' => '3',
+            'municipality_id' => '980',
         ]);
     }
 }

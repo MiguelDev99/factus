@@ -24,7 +24,7 @@ axios.interceptors.response.use(
   error => {
     if (error.response?.status === 401) {
       localStorage.removeItem('token')
-      window.location.href = '/' // o router.push('/') si usás rutas
+      window.location.href = '/login' // o router.push('/') si usás rutas
     }
     return Promise.reject(error)
   }

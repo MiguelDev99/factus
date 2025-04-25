@@ -25,6 +25,11 @@
               {{ texts.products }}
             </router-link>
           </li>
+          <li>
+            <router-link to="/perfil" class="block hover:text-yellow-400 transition" active-class="text-yellow-400">
+              {{ texts.profile }}
+            </router-link>
+          </li>
         </ul>
       </div>
       <button @click="logout"
@@ -39,7 +44,7 @@
       <!-- Barra superior -->
       <header class="bg-gray-700 text-white p-4 shadow flex justify-between">
         <div class="flex justify-between items-center">
-          <p>{{ userName() }}</p>
+          <p>{{ user ? `${texts.welcome}, ${user.name}` : texts.welcome_guest }}</p>
         </div>
         <div class="relative">
           <router-link to="/carrito" class="material-icons">shopping_cart</router-link>
@@ -69,13 +74,26 @@
       return {
         texts: texts,
         cartCount: 0,
+        user: null,
       };
     },
     mounted() {
       this.obtenerCantidadCarrito();
 
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user) {
+        this.user = user;
+      }
+
       emitter.on('carritoActualizado', () => {
         this.obtenerCantidadCarrito();
+      });
+
+      emitter.on('usuarioActualizado', (nuevoNombre) => {
+        const user = JSON.parse(localStorage.getItem('user')) || {};
+        user.name = nuevoNombre;
+        localStorage.setItem('user', JSON.stringify(user));
+        this.user = user; // <--- actualizamos también el estado reactivo
       });
     },
     name: 'DashboardLayout',
@@ -84,14 +102,6 @@
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         this.$router.push('/');
-      },
-      userName(){
-        const user = JSON.parse(localStorage.getItem('user'));
-        if (user) {
-          return `${texts.welcome}, ${user.name}`;
-        } else {
-          return `${texts.welcome_guest}`;
-        }
       },
       async obtenerCantidadCarrito() {
         try {
